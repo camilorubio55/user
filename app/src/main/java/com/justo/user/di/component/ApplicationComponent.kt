@@ -4,6 +4,7 @@ import android.app.Application
 import com.justo.user.app.UserApplication
 import com.justo.user.di.modules.ActivityBindingModule
 import com.justo.user.di.modules.FragmentBindingModule
+import com.justo.user.di.modules.ViewModelModule
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjector
@@ -13,7 +14,8 @@ import javax.inject.Singleton
 @Singleton
 @Component(
     modules = [
-        AndroidSupportInjectionModule::class, ActivityBindingModule::class, FragmentBindingModule::class
+        AndroidSupportInjectionModule::class, ActivityBindingModule::class, FragmentBindingModule::class,
+        ViewModelModule::class
     ]
 )
 interface ApplicationComponent : AndroidInjector<UserApplication> {
