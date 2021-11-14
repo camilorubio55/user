@@ -3,6 +3,7 @@ package com.justo.user.di.component
 import android.app.Application
 import com.justo.user.app.UserApplication
 import com.justo.user.di.modules.ActivityBindingModule
+import com.justo.user.di.modules.ApplicationModule
 import com.justo.user.di.modules.FragmentBindingModule
 import com.justo.user.di.modules.ViewModelModule
 import dagger.BindsInstance
@@ -14,7 +15,7 @@ import javax.inject.Singleton
 @Singleton
 @Component(
     modules = [
-        AndroidSupportInjectionModule::class, ActivityBindingModule::class, FragmentBindingModule::class,
+        ActivityBindingModule::class, AndroidSupportInjectionModule::class, ApplicationModule::class, FragmentBindingModule::class,
         ViewModelModule::class
     ]
 )
