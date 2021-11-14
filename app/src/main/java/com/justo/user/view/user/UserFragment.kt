@@ -1,8 +1,6 @@
 package com.justo.user.view.user
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,11 +24,9 @@ class UserFragment : DaggerFragment() {
     ): View? {
         binding = UserFragmentBinding.inflate(inflater, container, false)
 
-        return binding.root
-    }
+        viewModel.getUser()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        return binding.root
     }
 
 }
