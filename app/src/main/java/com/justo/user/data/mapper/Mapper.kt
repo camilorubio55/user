@@ -56,7 +56,9 @@ class Mapper @Inject constructor() : IMapper {
             name = userDB.name,
             email = userDB.email,
             phone = userDB.phone,
-            image = userDB.image
+            image = userDB.image,
+            isSelectable = userDB.isSelectable,
+            isSelected = userDB.isSelected
         )
     }
 

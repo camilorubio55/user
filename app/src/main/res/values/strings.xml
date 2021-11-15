@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">User</string>
+    <string name="action_mode_menu">Action menu</string>
+    <string name="title_users_toolbar">Users Jüsto</string>
 </resources>

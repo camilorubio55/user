@@ -9,7 +9,8 @@ import com.justo.user.utility.Result
 import javax.inject.Inject
 
 interface IUserRepository {
-    suspend fun updateListUserUseCase()
+    suspend fun updateListUser()
+    suspend fun updateUserSelectionStatus(status : Boolean)
     fun getUsers() : LiveData<List<User>?>
 }
 
@@ -18,10 +19,14 @@ class UserRepository @Inject constructor(
     private val userRemoteDataSource: IUserRemoteDataSource
 ) : IUserRepository {
 
-    override suspend fun updateListUserUseCase()  {
+    override suspend fun updateListUser()  {
         when (val result = userRemoteDataSource.getUsers()) {
             is Result.Success -> userLocalDataSource.saveUsers(result.data)
         }
+    }
+
+    override suspend fun updateUserSelectionStatus(status : Boolean) {
+        userLocalDataSource.updateUserSelectionStatus(status = status)
     }
 
     override fun getUsers(): LiveData<List<User>?> {

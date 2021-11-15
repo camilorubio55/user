@@ -12,7 +12,7 @@ class UpdateUserListUseCase @Inject constructor(
 ) : IUpdateListUserUseCase {
 
     override suspend fun invoke() {
-        repository.updateListUserUseCase()
+        repository.updateListUser()
     }
 
 }

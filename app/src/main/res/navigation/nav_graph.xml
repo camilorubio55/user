@@ -8,6 +8,6 @@
     <fragment
         android:id="@+id/userFragment"
         android:name="com.justo.user.view.user.UserFragment"
-        android:label="user_fragment"
+        android:label="@string/title_users_toolbar"
         tools:layout="@layout/user_fragment" />
 </navigation>

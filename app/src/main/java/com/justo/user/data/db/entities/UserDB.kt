@@ -1,6 +1,7 @@
 package com.justo.user.data.db.entities
 
 import android.os.Parcelable
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.android.parcel.Parcelize
@@ -12,5 +13,7 @@ data class UserDB(
     val name: String,
     var email: String,
     val phone: String,
-    val image: String
+    val image: String,
+    @ColumnInfo(name = "is_selectable") var isSelectable : Boolean = false,
+    @ColumnInfo(name = "is_selected") var isSelected : Boolean = false
 ) : Parcelable

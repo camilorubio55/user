@@ -10,6 +10,7 @@ import javax.inject.Inject
 interface IUserLocalDataSource {
     fun getUsers() : Flow<List<User>>
     suspend fun saveUsers(listUser: List<User>)
+    suspend fun updateUserSelectionStatus(status : Boolean)
 }
 
 class UserLocalDataSource @Inject constructor(
@@ -25,6 +26,10 @@ class UserLocalDataSource @Inject constructor(
 
     override suspend fun saveUsers(listUser: List<User>) {
         userDao.insertUsers(mapper.mapListUserToListUserDB(listUser))
+    }
+
+    override suspend fun updateUserSelectionStatus(status : Boolean) {
+        userDao.updateUserSelectionStatus(status = if (status) 1 else 0)
     }
 
 }

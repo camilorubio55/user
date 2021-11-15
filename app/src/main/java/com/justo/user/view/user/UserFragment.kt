@@ -5,8 +5,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Menu
+import android.view.MenuItem
+import android.view.MenuInflater
 import androidx.fragment.app.viewModels
+import com.justo.user.R
 import com.justo.user.databinding.UserFragmentBinding
+import com.justo.user.utility.ActionModeMenu
 import com.justo.user.utility.viewModel.ViewModelFactory
 import com.justo.user.view.user.adapter.UserAdapter
 import com.justo.user.viewModel.user.UserViewModel
@@ -20,20 +25,42 @@ class UserFragment : DaggerFragment() {
     private val viewModel: UserViewModel by viewModels { viewModelFactory }
     private lateinit var binding: UserFragmentBinding
     private lateinit var adapter: UserAdapter
+    private lateinit var actionMode: ActionModeMenu
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        setHasOptionsMenu(true)
+
         binding = UserFragmentBinding.inflate(inflater, container, false)
+
+        viewModel.updateUserListUseCase()
+
+        setupActionModeMenu()
 
         setupAdapter()
 
         setupListeners()
 
-        viewModel.updateUserListUseCase()
-
         return binding.root
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_users, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.delete_users -> {
+                viewModel.updateUserSelectionStatus(status = true)
+                if (actionMode.getMode() == null) {
+                    actionMode.startActionMode(view, R.menu.menu_selection_user)
+                }
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -44,10 +71,44 @@ class UserFragment : DaggerFragment() {
                 Log.d("--- Response User", "List empty")
             } else {
                 adapter.submitList(it)
+                adapter.notifyDataSetChanged()
             }
             binding.swipeRefresh.isRefreshing = false
         })
 
+    }
+
+    private fun setupActionModeMenu() {
+        actionMode = ActionModeMenu(clickSelect = {
+            actionMode.getMode()?.let { actionMode ->
+                actionMode.finish()
+            }
+            /*showConfirmationDialog(
+                R.string.message_confirmation_dialog,
+                true,
+                requireContext(),
+                R.string.text_yes,
+                R.string.text_no
+            ) {
+                viewModel.saveEmployeesAsNew()
+                actionMode.getMode()?.let { actionMode ->
+                    actionMode.finish()
+                }
+            }*/
+        }, clickBack = {
+            viewModel.updateUserSelectionStatus(status = false)
+            actionMode.getMode()?.let { actionMode ->
+                actionMode.finish()
+            }
+            /*binding.apply {
+                textViewCompanyName.visible()
+                textViewCompanyAddress.visible()
+                buttonAddNews.visible()
+                buttonSeeNews.visible()
+            }
+            viewModel.setItemsSelectable(false)
+            viewModel.cleanSelection()*/
+        })
     }
 
     private fun setupAdapter() {

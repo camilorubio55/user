@@ -8,7 +8,9 @@ data class User(
     val name: String,
     var email: String,
     val phone: String,
-    val image: String
+    val image: String,
+    var isSelectable : Boolean = false,
+    var isSelected : Boolean = false
 ) : Serializable {
 
     object DiffCallback : DiffUtil.ItemCallback<User>() {
@@ -16,7 +18,7 @@ data class User(
             oldItem: User,
             newItem: User
         ): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem.id == newItem.id && oldItem.isSelectable == newItem.isSelectable
         }
 
         override fun areContentsTheSame(

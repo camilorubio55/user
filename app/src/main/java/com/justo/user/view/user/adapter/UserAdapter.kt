@@ -1,14 +1,16 @@
 package com.justo.user.view.user.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.justo.user.databinding.UserItemBinding
 import com.justo.user.domain.models.User
 
-class UserAdapter() : ListAdapter<User, UserAdapter.UserViewHolder>(User.DiffCallback){
+class UserAdapter : ListAdapter<User, UserAdapter.UserViewHolder>(User.DiffCallback){
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -31,6 +33,12 @@ class UserAdapter() : ListAdapter<User, UserAdapter.UserViewHolder>(User.DiffCal
                 textViewName.text = user.name
                 textViewEmail.text = user.email
                 textViewPhone.text = user.phone
+
+                if(user.isSelectable) {
+                    checkBoxUser.visibility = View.VISIBLE
+                } else {
+                    checkBoxUser.visibility = View.GONE
+                }
 
                 Glide.with(imageViewAvatar.context)
                     .load(user.image)
