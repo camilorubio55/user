@@ -2,11 +2,14 @@ package com.justo.user.data.dataSource
 
 import com.justo.user.data.db.dao.UserDao
 import com.justo.user.data.mapper.IMapper
-import com.justo.user.utility.Result
+import com.justo.user.domain.models.User
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 interface IUserLocalDataSource {
-    suspend fun getUser() : Result<String>
+    fun getUsers() : Flow<List<User>>
+    suspend fun saveUsers(listUser: List<User>)
 }
 
 class UserLocalDataSource @Inject constructor(
@@ -14,8 +17,14 @@ class UserLocalDataSource @Inject constructor(
     private val userDao: UserDao
 ) : IUserLocalDataSource {
 
-    override suspend fun getUser(): Result<String> {
-        return Result.Success(userDao.getUsers()[0].email)
+    override fun getUsers(): Flow<List<User>> {
+        return userDao.getUsers().map {
+            mapper.mapListUserDBToListUser(listUserDB = it)
+        }
+    }
+
+    override suspend fun saveUsers(listUser: List<User>) {
+        userDao.insertUsers(mapper.mapListUserToListUserDB(listUser))
     }
 
 }

@@ -4,14 +4,15 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import com.justo.user.data.db.entities.UserDB
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface UserDao {
 
     @Insert
-    suspend fun insertUser(userDB: UserDB)
+    suspend fun insertUsers(listUsers : List<UserDB>)
 
     @Query("SELECT * FROM user")
-    suspend fun getUsers() : List<UserDB>
+    fun getUsers() : Flow<List<UserDB>>
 
 }

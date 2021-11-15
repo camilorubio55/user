@@ -1,6 +1,7 @@
 package com.justo.user.view.user
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,6 +28,19 @@ class UserFragment : DaggerFragment() {
         viewModel.getUser()
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel.users.observe(viewLifecycleOwner, {
+            if (it.isNullOrEmpty()) {
+                Log.d("--- Response User", "List empty")
+            } else {
+                Log.d("--- Response User", it.toString())
+            }
+        })
+
     }
 
 }

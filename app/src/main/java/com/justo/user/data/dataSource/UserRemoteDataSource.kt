@@ -13,7 +13,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 interface IUserRemoteDataSource {
-    suspend fun getUser() : Result<List<User>>
+    suspend fun getUsers() : Result<List<User>>
 }
 
 class UserRemoteDataSource @Inject constructor(
@@ -21,7 +21,7 @@ class UserRemoteDataSource @Inject constructor(
     private val userApi: UserApi
 ) : IUserRemoteDataSource {
 
-    override suspend fun getUser(): Result<List<User>> {
+    override suspend fun getUsers(): Result<List<User>> {
         return withContext(Dispatchers.IO) {
             val result = safeApiCall(
                 call = {
@@ -34,7 +34,7 @@ class UserRemoteDataSource @Inject constructor(
             when (result) {
                 is Result.Success -> {
                     val listUsers = result.data
-                    Result.Success(mapper.mapToListUser(listUsers))
+                    Result.Success(mapper.mapListUserDTOToListUser(listUsers))
                 }
                 is Result.Error -> Result.Error(result.exception)
             }
