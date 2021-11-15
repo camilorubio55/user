@@ -3,16 +3,16 @@ package com.justo.user.domain.useCases
 import com.justo.user.data.repository.IUserRepository
 import javax.inject.Inject
 
-interface IUpdateListUsersUseCase {
+interface IUpdateListUserUseCase {
     suspend fun invoke()
 }
 
-class UpdateListUsersUseCase @Inject constructor(
+class UpdateUserListUseCase @Inject constructor(
     private val repository: IUserRepository
-) : IUpdateListUsersUseCase {
+) : IUpdateListUserUseCase {
 
     override suspend fun invoke() {
-        repository.updateListUsersUseCase()
+        repository.updateListUserUseCase()
     }
 
 }

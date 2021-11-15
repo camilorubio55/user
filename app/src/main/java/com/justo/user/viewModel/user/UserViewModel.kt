@@ -5,12 +5,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.justo.user.domain.models.User
 import com.justo.user.domain.useCases.IGetUsersUseCase
-import com.justo.user.domain.useCases.IUpdateListUsersUseCase
+import com.justo.user.domain.useCases.IUpdateListUserUseCase
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class UserViewModel @Inject constructor(
-    private val updateListUsersUseCase: IUpdateListUsersUseCase,
+    private val updateListUserUseCase: IUpdateListUserUseCase,
     getUsers: IGetUsersUseCase
 )  : ViewModel() {
 
@@ -18,9 +18,9 @@ class UserViewModel @Inject constructor(
     val users: LiveData<List<User>?>
         get() = _users
 
-    fun getUser() {
+    fun updateUserListUseCase() {
         viewModelScope.launch {
-            updateListUsersUseCase.invoke()
+            updateListUserUseCase.invoke()
         }
     }
 

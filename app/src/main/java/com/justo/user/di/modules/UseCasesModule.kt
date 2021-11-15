@@ -1,9 +1,9 @@
 package com.justo.user.di.modules
 
 import com.justo.user.domain.useCases.GetUsersUseCase
-import com.justo.user.domain.useCases.UpdateListUsersUseCase
+import com.justo.user.domain.useCases.UpdateUserListUseCase
 import com.justo.user.domain.useCases.IGetUsersUseCase
-import com.justo.user.domain.useCases.IUpdateListUsersUseCase
+import com.justo.user.domain.useCases.IUpdateListUserUseCase
 import dagger.Binds
 import dagger.Module
 
@@ -14,5 +14,5 @@ abstract class UseCasesModule {
     abstract fun provideGetUserFromLocal(getGetUsersUseCase: GetUsersUseCase): IGetUsersUseCase
 
     @Binds
-    abstract fun provideGetUserUseCase(updateListUsersUseCase: UpdateListUsersUseCase): IUpdateListUsersUseCase
+    abstract fun provideGetUserUseCase(updateUserListUseCase: UpdateUserListUseCase): IUpdateListUserUseCase
 }
