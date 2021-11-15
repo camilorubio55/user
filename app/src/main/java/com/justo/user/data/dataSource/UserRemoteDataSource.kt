@@ -1,6 +1,8 @@
 package com.justo.user.data.dataSource
 
 import com.justo.user.data.apiService.UserApi
+import com.justo.user.data.mapper.IMapper
+import com.justo.user.domain.models.User
 import com.justo.user.utility.Constants
 import com.justo.user.utility.Result
 import com.justo.user.utility.safeApiCall
@@ -11,14 +13,15 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 interface IUserRemoteDataSource {
-    suspend fun getUser() : Result<String>
+    suspend fun getUser() : Result<List<User>>
 }
 
 class UserRemoteDataSource @Inject constructor(
+    private val mapper: IMapper,
     private val userApi: UserApi
 ) : IUserRemoteDataSource {
 
-    override suspend fun getUser(): Result<String> {
+    override suspend fun getUser(): Result<List<User>> {
         return withContext(Dispatchers.IO) {
             val result = safeApiCall(
                 call = {
@@ -30,7 +33,8 @@ class UserRemoteDataSource @Inject constructor(
             )
             when (result) {
                 is Result.Success -> {
-                    Result.Success(result.data[0].name.toString())
+                    val listUsers = result.data
+                    Result.Success(mapper.mapToListUser(listUsers))
                 }
                 is Result.Error -> Result.Error(result.exception)
             }

@@ -14,7 +14,7 @@ class UserViewModel @Inject constructor(
     fun getUser() {
         viewModelScope.launch {
             val response = getUserUseCase.invoke()
-            Log.d("---Response Service", response)
+            Log.d("---Response Service", response?.get(0)?.name ?: "null")
         }
     }
 

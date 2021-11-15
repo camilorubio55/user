@@ -8,6 +8,9 @@ import com.justo.user.di.modules.FragmentBindingModule
 import com.justo.user.di.modules.ViewModelModule
 import com.justo.user.di.modules.RemoteDataSourceModule
 import com.justo.user.di.modules.RepositoryModule
+import com.justo.user.di.modules.RoomModule
+import com.justo.user.di.modules.MapperModule
+import com.justo.user.di.modules.LocalDataSourceModule
 import com.justo.user.di.modules.UseCasesModule
 import dagger.BindsInstance
 import dagger.Component
@@ -19,7 +22,8 @@ import javax.inject.Singleton
 @Component(
     modules = [
         ActivityBindingModule::class, AndroidSupportInjectionModule::class, ApplicationModule::class, FragmentBindingModule::class,
-        RemoteDataSourceModule::class, RepositoryModule::class, UseCasesModule::class, ViewModelModule::class
+        LocalDataSourceModule::class, MapperModule::class, RemoteDataSourceModule::class, RepositoryModule::class, RoomModule::class,
+        UseCasesModule::class, ViewModelModule::class
     ]
 )
 interface ApplicationComponent : AndroidInjector<UserApplication> {
