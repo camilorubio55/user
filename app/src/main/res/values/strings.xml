@@ -2,4 +2,8 @@
     <string name="app_name">User</string>
     <string name="action_mode_menu">Action menu</string>
     <string name="title_users_toolbar">Users Jüsto</string>
+    <string name="title_delete_users">Delete users</string>
+    <string name="title_description_delete_users">Are you sure you want to delete users? </string>
+    <string name="title_button_delete">Delete</string>
+    <string name="title_button_cancel">Cancel</string>
 </resources>

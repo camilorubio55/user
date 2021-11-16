@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 interface IUserLocalDataSource {
+    suspend fun deleteUsersSelected()
     fun getUsers() : Flow<List<User>>
     suspend fun saveUsers(listUser: List<User>)
     suspend fun updateUserSelectionStatus(status : Boolean)
@@ -18,6 +19,10 @@ class UserLocalDataSource @Inject constructor(
     private val mapper: IMapper,
     private val userDao: UserDao
 ) : IUserLocalDataSource {
+
+    override suspend fun deleteUsersSelected() {
+        userDao.deleteUsersSelected()
+    }
 
     override fun getUsers(): Flow<List<User>> {
         return userDao.getUsers().map {

@@ -1,13 +1,13 @@
 package com.justo.user.view.user
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Menu
 import android.view.MenuItem
 import android.view.MenuInflater
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.viewModels
 import com.justo.user.R
 import com.justo.user.databinding.UserFragmentBinding
@@ -67,11 +67,7 @@ class UserFragment : DaggerFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.users.observe(viewLifecycleOwner, {
-            if (it.isNullOrEmpty()) {
-                Log.d("--- Response User", "List empty")
-            } else {
-                adapter.submitList(it)
-            }
+            adapter.submitList(it)
             binding.swipeRefresh.isRefreshing = false
         })
 
@@ -79,9 +75,19 @@ class UserFragment : DaggerFragment() {
 
     private fun setupActionModeMenu() {
         actionMode = ActionModeMenu(clickSelect = {
-            actionMode.getMode()?.let { actionMode ->
-                actionMode.finish()
-            }
+            val dialog = AlertDialog.Builder(requireContext())
+                .setTitle(R.string.title_delete_users)
+                .setMessage(R.string.title_description_delete_users)
+                .setCancelable(true)
+                .setPositiveButton(R.string.title_button_delete) { _, _ ->
+                    viewModel.deleteUsersSelected()
+                }
+                .setNegativeButton(R.string.title_button_cancel) { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .create()
+
+            dialog.show()
         }, clickBack = {
             viewModel.updateUserSelectionStatus(status = false)
             actionMode.getMode()?.let { actionMode ->

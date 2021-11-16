@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.justo.user.domain.models.User
+import com.justo.user.domain.useCases.IDeleteUsersSelectedUseCase
 import com.justo.user.domain.useCases.IGetUsersUseCase
 import com.justo.user.domain.useCases.IUpdateListUserUseCase
 import com.justo.user.domain.useCases.IUpdateUserCheckedUseCase
@@ -12,6 +13,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class UserViewModel @Inject constructor(
+    private val deleteUsersSelectedUseCase: IDeleteUsersSelectedUseCase,
     private val updateUserCheckedUseCase: IUpdateUserCheckedUseCase,
     private val updateUserSelectionStatusUseCase: IUpdateUserSelectionStatusUseCase,
     private val updateListUserUseCase: IUpdateListUserUseCase,
@@ -21,6 +23,12 @@ class UserViewModel @Inject constructor(
     private var _users: LiveData<List<User>?> = getUsers.invoke()
     val users: LiveData<List<User>?>
         get() = _users
+
+    fun deleteUsersSelected() {
+        viewModelScope.launch {
+            deleteUsersSelectedUseCase.invoke()
+        }
+    }
 
     fun updateUserListUseCase() {
         viewModelScope.launch {
