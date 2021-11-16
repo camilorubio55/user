@@ -9,7 +9,7 @@ import com.justo.user.domain.useCases.IUpdateUserCheckedUseCase
 import com.justo.user.domain.useCases.UpdateUserCheckedUseCase
 import com.justo.user.domain.useCases.DeleteUsersSelectedUseCase
 import com.justo.user.domain.useCases.IDeleteUsersSelectedUseCase
-import com.justo.user.domain.useCases.IUpdateListUserUseCase
+import com.justo.user.domain.useCases.IUpdateUserListUseCase
 import dagger.Binds
 import dagger.Module
 
@@ -23,7 +23,7 @@ abstract class UseCasesModule {
     abstract fun provideGetGetUsersUseCase(getGetUsersUseCase: GetUsersUseCase): IGetUsersUseCase
 
     @Binds
-    abstract fun provideUpdateUserListUseCase(updateUserListUseCase: UpdateUserListUseCase): IUpdateListUserUseCase
+    abstract fun provideUpdateUserListUseCase(updateUserListUseCase: UpdateUserListUseCase): IUpdateUserListUseCase
 
     @Binds
     abstract fun provideUpdateUserSelectionStatusUseCase(updateUserSelectionStatusUseCase: UpdateUserSelectionStatusUseCase): IUpdateUserSelectionStatusUseCase
