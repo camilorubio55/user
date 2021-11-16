@@ -20,8 +20,8 @@ class UserViewModel @Inject constructor(
     getUsers: IGetUsersUseCase
 )  : ViewModel() {
 
-    private var _users: LiveData<List<User>?> = getUsers.invoke()
-    val users: LiveData<List<User>?>
+    private var _users: LiveData<List<User>> = getUsers.invoke()
+    val users: LiveData<List<User>>
         get() = _users
 
     fun deleteUsersSelected() {

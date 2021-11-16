@@ -12,6 +12,8 @@ import androidx.fragment.app.viewModels
 import com.justo.user.R
 import com.justo.user.databinding.UserFragmentBinding
 import com.justo.user.utility.ActionModeMenu
+import com.justo.user.utility.Utils.Companion.gone
+import com.justo.user.utility.Utils.Companion.visible
 import com.justo.user.utility.viewModel.ViewModelFactory
 import com.justo.user.view.user.adapter.UserAdapter
 import com.justo.user.viewModel.user.UserViewModel
@@ -55,9 +57,7 @@ class UserFragment : DaggerFragment() {
         when(item.itemId) {
             R.id.delete_users -> {
                 viewModel.updateUserSelectionStatus(status = true)
-                if (actionMode.getMode() == null) {
-                    actionMode.startActionMode(view, R.menu.menu_selection_user)
-                }
+                showActionModeMenu()
             }
         }
         return super.onOptionsItemSelected(item)
@@ -66,11 +66,32 @@ class UserFragment : DaggerFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.users.observe(viewLifecycleOwner, {
-            adapter.submitList(it)
-            binding.swipeRefresh.isRefreshing = false
+        viewModel.users.observe(viewLifecycleOwner, { userList ->
+            binding.apply {
+                if (userList.isNullOrEmpty()) {
+                    containerEmptyState.visible()
+                    recyclerViewUsers.gone()
+                    hideActionModeMenu()
+                } else {
+                    userList.find { user ->  user.isSelectable }?.let {
+                        showActionModeMenu()
+                    } ?: run {
+                        hideActionModeMenu()
+                    }
+                    recyclerViewUsers.visible()
+                    containerEmptyState.gone()
+                }
+                adapter.submitList(userList)
+                swipeRefresh.isRefreshing = false
+            }
         })
 
+    }
+
+    private fun hideActionModeMenu() {
+        actionMode.getMode()?.let { actionMode ->
+            actionMode.finish()
+        }
     }
 
     private fun setupActionModeMenu() {
@@ -81,6 +102,7 @@ class UserFragment : DaggerFragment() {
                 .setCancelable(true)
                 .setPositiveButton(R.string.title_button_delete) { _, _ ->
                     viewModel.deleteUsersSelected()
+                    hideActionModeMenu()
                 }
                 .setNegativeButton(R.string.title_button_cancel) { dialog, _ ->
                     dialog.dismiss()
@@ -90,9 +112,7 @@ class UserFragment : DaggerFragment() {
             dialog.show()
         }, clickBack = {
             viewModel.updateUserSelectionStatus(status = false)
-            actionMode.getMode()?.let { actionMode ->
-                actionMode.finish()
-            }
+            hideActionModeMenu()
         })
     }
 
@@ -108,6 +128,12 @@ class UserFragment : DaggerFragment() {
             swipeRefresh.setOnRefreshListener {
                 viewModel.updateUserListUseCase()
             }
+        }
+    }
+
+    private fun showActionModeMenu() {
+        if (actionMode.getMode() == null) {
+            actionMode.startActionMode(view, R.menu.menu_selection_user)
         }
     }
 

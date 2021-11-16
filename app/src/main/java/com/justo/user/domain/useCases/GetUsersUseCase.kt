@@ -6,14 +6,14 @@ import com.justo.user.domain.models.User
 import javax.inject.Inject
 
 interface IGetUsersUseCase {
-    fun invoke() : LiveData<List<User>?>
+    fun invoke() : LiveData<List<User>>
 }
 
 class GetUsersUseCase @Inject constructor(
     private val repository: IUserRepository
 ) : IGetUsersUseCase {
 
-    override fun invoke(): LiveData<List<User>?> {
+    override fun invoke(): LiveData<List<User>> {
         return repository.getUsers()
     }
 

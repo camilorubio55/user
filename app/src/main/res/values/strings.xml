@@ -6,4 +6,5 @@
     <string name="title_description_delete_users">Are you sure you want to delete users? </string>
     <string name="title_button_delete">Delete</string>
     <string name="title_button_cancel">Cancel</string>
+    <string name="description_empty_state_user">No users found</string>
 </resources>
