@@ -6,11 +6,13 @@ import androidx.lifecycle.viewModelScope
 import com.justo.user.domain.models.User
 import com.justo.user.domain.useCases.IGetUsersUseCase
 import com.justo.user.domain.useCases.IUpdateListUserUseCase
+import com.justo.user.domain.useCases.IUpdateUserCheckedUseCase
 import com.justo.user.domain.useCases.IUpdateUserSelectionStatusUseCase
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class UserViewModel @Inject constructor(
+    private val updateUserCheckedUseCase: IUpdateUserCheckedUseCase,
     private val updateUserSelectionStatusUseCase: IUpdateUserSelectionStatusUseCase,
     private val updateListUserUseCase: IUpdateListUserUseCase,
     getUsers: IGetUsersUseCase
@@ -23,6 +25,12 @@ class UserViewModel @Inject constructor(
     fun updateUserListUseCase() {
         viewModelScope.launch {
             updateListUserUseCase.invoke()
+        }
+    }
+
+    fun updateUserChecked(id : Int, isChecked : Boolean) {
+        viewModelScope.launch {
+            updateUserCheckedUseCase.invoke(id = id, isChecked = isChecked)
         }
     }
 

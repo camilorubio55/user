@@ -10,7 +10,9 @@ import com.bumptech.glide.Glide
 import com.justo.user.databinding.UserItemBinding
 import com.justo.user.domain.models.User
 
-class UserAdapter : ListAdapter<User, UserAdapter.UserViewHolder>(User.DiffCallback){
+class UserAdapter(
+    private val onUserChecked : (id : Int, checked : Boolean) -> Unit
+) : ListAdapter<User, UserAdapter.UserViewHolder>(User.DiffCallback){
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -21,23 +23,26 @@ class UserAdapter : ListAdapter<User, UserAdapter.UserViewHolder>(User.DiffCallb
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
         val user = getItem(position)
-        holder.bind(user)
+        holder.bind(onUserChecked, user)
     }
 
     class UserViewHolder private constructor(
         private val binding: UserItemBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(user: User) {
+        fun bind(
+            onUserChecked : (id : Int, checked : Boolean) -> Unit,
+            user: User
+        ) {
             binding.apply {
                 textViewName.text = user.name
                 textViewEmail.text = user.email
                 textViewPhone.text = user.phone
+                checkBoxUser.isVisible = user.isSelectable
+                checkBoxUser.isChecked = user.isSelected
 
-                if(user.isSelectable) {
-                    checkBoxUser.visibility = View.VISIBLE
-                } else {
-                    checkBoxUser.visibility = View.GONE
+                checkBoxUser.setOnCheckedChangeListener { _, state ->
+                    onUserChecked(user.id, state)
                 }
 
                 Glide.with(imageViewAvatar.context)

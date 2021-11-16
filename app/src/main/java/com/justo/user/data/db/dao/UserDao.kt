@@ -18,4 +18,10 @@ interface UserDao {
     @Query("UPDATE user SET is_selectable = :status WHERE 1 = 1")
     suspend fun updateUserSelectionStatus(status : Int)
 
+    @Query("UPDATE user SET is_selected = 0 WHERE 1 = 1")
+    suspend fun cleanUsersChecked()
+
+    @Query("UPDATE user SET is_selected = :isChecked WHERE id = :id")
+    suspend fun updateUserChecked(id : Int, isChecked : Int)
+
 }

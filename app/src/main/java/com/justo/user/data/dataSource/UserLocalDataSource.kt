@@ -11,6 +11,7 @@ interface IUserLocalDataSource {
     fun getUsers() : Flow<List<User>>
     suspend fun saveUsers(listUser: List<User>)
     suspend fun updateUserSelectionStatus(status : Boolean)
+    suspend fun updateUserChecked(id: Int, isChecked: Boolean)
 }
 
 class UserLocalDataSource @Inject constructor(
@@ -29,7 +30,14 @@ class UserLocalDataSource @Inject constructor(
     }
 
     override suspend fun updateUserSelectionStatus(status : Boolean) {
+        if (!status) {
+            userDao.cleanUsersChecked()
+        }
         userDao.updateUserSelectionStatus(status = if (status) 1 else 0)
+    }
+
+    override suspend fun updateUserChecked(id: Int, isChecked: Boolean) {
+        userDao.updateUserChecked(id = id, isChecked = if (isChecked) 1 else 0)
     }
 
 }

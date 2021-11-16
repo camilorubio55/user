@@ -5,6 +5,8 @@ import com.justo.user.domain.useCases.UpdateUserListUseCase
 import com.justo.user.domain.useCases.IGetUsersUseCase
 import com.justo.user.domain.useCases.UpdateUserSelectionStatusUseCase
 import com.justo.user.domain.useCases.IUpdateUserSelectionStatusUseCase
+import com.justo.user.domain.useCases.IUpdateUserCheckedUseCase
+import com.justo.user.domain.useCases.UpdateUserCheckedUseCase
 import com.justo.user.domain.useCases.IUpdateListUserUseCase
 import dagger.Binds
 import dagger.Module
@@ -20,4 +22,7 @@ abstract class UseCasesModule {
 
     @Binds
     abstract fun provideUpdateUserSelectionStatusUseCase(updateUserSelectionStatusUseCase: UpdateUserSelectionStatusUseCase): IUpdateUserSelectionStatusUseCase
+
+    @Binds
+    abstract fun provideUpdateUserCheckedUseCase(updateUpdateUserCheckedUseCase: UpdateUserCheckedUseCase): IUpdateUserCheckedUseCase
 }

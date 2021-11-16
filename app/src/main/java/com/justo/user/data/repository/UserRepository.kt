@@ -11,6 +11,7 @@ import javax.inject.Inject
 interface IUserRepository {
     suspend fun updateListUser()
     suspend fun updateUserSelectionStatus(status : Boolean)
+    suspend fun updateUserChecked(id : Int, isChecked : Boolean)
     fun getUsers() : LiveData<List<User>?>
 }
 
@@ -27,6 +28,10 @@ class UserRepository @Inject constructor(
 
     override suspend fun updateUserSelectionStatus(status : Boolean) {
         userLocalDataSource.updateUserSelectionStatus(status = status)
+    }
+
+    override suspend fun updateUserChecked(id: Int, isChecked: Boolean) {
+        userLocalDataSource.updateUserChecked(id = id, isChecked = isChecked)
     }
 
     override fun getUsers(): LiveData<List<User>?> {

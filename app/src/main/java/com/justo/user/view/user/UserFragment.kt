@@ -71,7 +71,6 @@ class UserFragment : DaggerFragment() {
                 Log.d("--- Response User", "List empty")
             } else {
                 adapter.submitList(it)
-                adapter.notifyDataSetChanged()
             }
             binding.swipeRefresh.isRefreshing = false
         })
@@ -83,36 +82,18 @@ class UserFragment : DaggerFragment() {
             actionMode.getMode()?.let { actionMode ->
                 actionMode.finish()
             }
-            /*showConfirmationDialog(
-                R.string.message_confirmation_dialog,
-                true,
-                requireContext(),
-                R.string.text_yes,
-                R.string.text_no
-            ) {
-                viewModel.saveEmployeesAsNew()
-                actionMode.getMode()?.let { actionMode ->
-                    actionMode.finish()
-                }
-            }*/
         }, clickBack = {
             viewModel.updateUserSelectionStatus(status = false)
             actionMode.getMode()?.let { actionMode ->
                 actionMode.finish()
             }
-            /*binding.apply {
-                textViewCompanyName.visible()
-                textViewCompanyAddress.visible()
-                buttonAddNews.visible()
-                buttonSeeNews.visible()
-            }
-            viewModel.setItemsSelectable(false)
-            viewModel.cleanSelection()*/
         })
     }
 
     private fun setupAdapter() {
-        adapter = UserAdapter()
+        adapter = UserAdapter(onUserChecked = { id, isChecked ->
+            viewModel.updateUserChecked(id = id, isChecked = isChecked)
+        })
         binding.recyclerViewUsers.adapter = adapter
     }
 
